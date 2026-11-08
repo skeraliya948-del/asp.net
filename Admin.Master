@@ -1,0 +1,169 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Admin.master.cs" Inherits="SweetDelights.AdminMaster" %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - SweetDelights Bakery Admin</title>
+
+    <!-- Bootstrap 5.3.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <!-- FontAwesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- SweetDelights Custom Theme Stylesheet -->
+    <link href="~/css/sweetdelights.css" rel="stylesheet" type="text/css" />
+
+    <asp:ContentPlaceHolder ID="AdminHead" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body style="background-color: #FBF6F3;">
+    <form id="adminForm" runat="server">
+        <div class="admin-wrapper">
+            <!-- Sidebar Navigation -->
+            <aside class="admin-sidebar">
+                <div class="admin-sidebar-brand">
+                    <i class="fa-solid fa-cake-candles text-danger fs-3"></i>
+                    <div>
+                        <h4>Sweet<span>Delights</span></h4>
+                        <span class="badge bg-danger text-white" style="font-size:0.68rem; letter-spacing:0.8px;">ADMIN PORTAL</span>
+                    </div>
+                </div>
+
+                <ul class="admin-nav">
+                    <li class="admin-nav-item">
+                        <a href="Admin_Dashboard.aspx" class="admin-nav-link">
+                            <i class="bi bi-speedometer2"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="admin-nav-item">
+                        <a href="Add_Company.aspx" class="admin-nav-link">
+                            <i class="bi bi-building-add"></i>
+                            <span>Add Company</span>
+                        </a>
+                    </li>
+                    <li class="admin-nav-item">
+                        <a href="Add_Product.aspx" class="admin-nav-link">
+                            <i class="bi bi-plus-circle"></i>
+                            <span>Add Product</span>
+                        </a>
+                    </li>
+                    <li class="admin-nav-item">
+                        <a href="Show_Company.aspx" class="admin-nav-link">
+                            <i class="bi bi-shop-window"></i>
+                            <span>Show Companies</span>
+                        </a>
+                    </li>
+                    <li class="admin-nav-item">
+                        <a href="Show_Products.aspx" class="admin-nav-link">
+                            <i class="bi bi-cake2"></i>
+                            <span>Show Products</span>
+                        </a>
+                    </li>
+                    <li class="admin-nav-item">
+                        <a href="admin_order.aspx" class="admin-nav-link">
+                            <i class="bi bi-receipt-cutoff"></i>
+                            <span>Admin Orders</span>
+                            <span class="badge bg-danger rounded-pill ms-auto"><%= GetOrdersCount() %></span>
+                        </a>
+                    </li>
+                    <li class="admin-nav-item">
+                        <a href="Insert.aspx" class="admin-nav-link">
+                            <i class="bi bi-node-plus"></i>
+                            <span>Insert Form</span>
+                        </a>
+                    </li>
+
+                    <li class="admin-nav-divider"></li>
+
+                    <li class="admin-nav-item">
+                        <a href="Default.aspx" class="admin-nav-link" target="_blank">
+                            <i class="bi bi-box-arrow-up-right"></i>
+                            <span>View Storefront</span>
+                        </a>
+                    </li>
+                    <li class="admin-nav-item">
+                        <a href="Login.aspx" class="admin-nav-link text-danger">
+                            <i class="bi bi-power text-danger"></i>
+                            <span>Sign Out</span>
+                        </a>
+                    </li>
+                </ul>
+            </aside>
+
+            <!-- Main Content Area -->
+            <div class="admin-content-area">
+                <!-- Admin Top Navbar -->
+                <header class="admin-topbar">
+                    <div class="d-flex align-items-center gap-3">
+                        <button class="btn btn-sm btn-outline-secondary d-lg-none" type="button" id="sidebarToggleBtn">
+                            <i class="bi bi-list fs-5"></i>
+                        </button>
+                        <div class="input-group d-none d-md-flex" style="width: 280px;">
+                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-muted"></i></span>
+                            <input type="text" class="form-control bg-light border-start-0" placeholder="Search orders, cakes..." />
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-3">
+                        <!-- Notification Dropdown -->
+                        <div class="dropdown">
+                            <button class="btn btn-light rounded-circle position-relative p-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-bell fs-5 text-dark"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow border-0 p-3" style="width: 300px; border-radius: 12px;">
+                                <li class="fw-bold text-dark mb-2">Recent Notifications</li>
+                                <li class="small py-2 border-bottom">
+                                    <span class="text-danger fw-bold">New Order #SD-8492</span> received from Emily Clarke.
+                                    <div class="text-muted" style="font-size:0.75rem;">12 mins ago</div>
+                                </li>
+                                <li class="small py-2 border-bottom">
+                                    <span class="text-success fw-bold">Stock Low Alert:</span> Belgian Dark Chocolate Truffle Cake.
+                                    <div class="text-muted" style="font-size:0.75rem;">1 hour ago</div>
+                                </li>
+                                <li class="small py-2">
+                                    <span class="text-primary fw-bold">New Review:</span> 5 stars on Strawberry Tart!
+                                    <div class="text-muted" style="font-size:0.75rem;">3 hours ago</div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Admin User Profile -->
+                        <div class="d-flex align-items-center gap-2">
+                            <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=120&q=80" alt="Admin" class="rounded-circle border border-2 border-danger" style="width: 42px; height: 42px; object-fit: cover;" />
+                            <div class="d-none d-sm-block text-start">
+                                <div class="fw-bold text-dark lh-1" style="font-size:0.9rem;">Chef Monique</div>
+                                <span class="text-muted" style="font-size:0.75rem;">Head Pastry Admin</span>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Admin Dynamic Body -->
+                <div class="admin-main-inner">
+                    <asp:ContentPlaceHolder ID="AdminContent" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+
+                <!-- Admin Footer -->
+                <footer class="bg-white py-3 px-4 border-top text-center text-muted small mt-auto">
+                    SweetDelights Bakery Administrative Management System &copy; <%= DateTime.Now.Year %>
+                </footer>
+            </div>
+        </div>
+    </form>
+
+    <!-- Bootstrap 5.3.3 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetDelights Script -->
+    <script src="<%= ResolveUrl("~/js/sweetdelights.js") %>"></script>
+    <asp:ContentPlaceHolder ID="AdminScripts" runat="server">
+    </asp:ContentPlaceHolder>
+</body>
+</html>
